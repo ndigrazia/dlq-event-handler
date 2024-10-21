@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.7.10</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
+	<groupId>com.telefonica</groupId>
+	<artifactId>dlq-event-handler</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>DLQ Event Handler</name>
+	<description>DLQ Event Handler Service</description>
+
+	<properties>
+		<java.version>1.8</java.version>
+		<liquibase.version>4.21.1</liquibase.version>
+        <springboot.version>2.7.10</springboot.version>
+    </properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+				<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jms</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.jms</groupId>
+			<artifactId>javax.jms-api</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>wls</groupId>
+			<artifactId>wlsclient</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/resources/lib/wlthint3client.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.telefonica</groupId>
+			<artifactId>events-schemas</artifactId>
+			<version>2.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/resources/lib/events-schemas-2.0.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>  
+		</dependency> 
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+                	<jvmArguments>--add-opens java.base/java.io=ALL-UNNAMED</jvmArguments>
+				</configuration>
+			</plugin>
+			 <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.version}</version>
+	           	  <configuration>
+                    <propertyFile>src/main/resources/liquibase.yaml</propertyFile>
+					<changeLogFile>src/main/resources/master.yaml</changeLogFile>
+					<outputChangeLogFile>src/main/resources/db/changelog/output_changelog.yaml</outputChangeLogFile>
+					<diffChangeLogFile>src/main/resources/db/changelog/diff_changelog.yaml</diffChangeLogFile>
+				    <changeLogFile>src/main/resources/master.yaml</changeLogFile>
+                    <verbose>true</verbose>
+                    <dropFirst>false</dropFirst>
+                </configuration>
+				<dependencies>
+					<dependency>
+                        <groupId>org.liquibase.ext</groupId>
+                        <artifactId>liquibase-hibernate5</artifactId>
+                        <version>${liquibase.version}</version>
+                    </dependency>
+					 <dependency>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-starter-data-jpa</artifactId>
+						<version>${springboot.version}</version>
+					</dependency>	
+					<dependency>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-validation</artifactId>
+                        <version>${springboot.version}</version>
+                    </dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

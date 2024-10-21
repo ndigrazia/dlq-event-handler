@@ -1,0 +1,18 @@
+databaseChangeLog:
+- changeSet:
+    id: 1
+    author: user
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: error_message
+            type: TEXT
+        tableName: failed_events
+- changeSet:
+    id: 2
+    author: user
+    changes:
+    - dropColumn:
+        columnName: error
+        tableName: failed_events

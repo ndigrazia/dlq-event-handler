@@ -1,0 +1,39 @@
+databaseChangeLog:
+- changeSet:
+    id: 1
+    author: user
+    preConditions:
+      - onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: failed_events
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: failed_events_pkey
+            name: id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: payload
+            type: TEXT
+        - column:
+            name: headers
+            type: TEXT
+        - column:
+            name: error
+            type: TEXT
+        - column:
+            constraints:
+              nullable: false
+            defaultValueComputed: CURRENT_TIMESTAMP
+            name: created_at
+            type: TIMESTAMP without time zone
+        tableName: failed_events
+
